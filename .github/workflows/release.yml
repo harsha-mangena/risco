@@ -16,7 +16,7 @@ jobs:
       image: ghcr.io/${{ github.repository_owner }}/risco-actions/check
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with: { python-version: "3.12" }
       - run: |
           pip install -e "packages/risco-core[sql,scan,dev]" -e packages/risco-cli
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with: { python-version: "3.12" }
       - run: pip install build && python -m build packages/risco-core packages/risco-cli
       - uses: pypa/gh-action-pypi-publish@release/v1
