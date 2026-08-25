@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Risco merge-risk policy",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": 1 },
+    "service": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "contracts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "openapi": { "type": "array", "items": { "type": "string" } },
+            "protobuf": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "migrations": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "paths": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "base_url_env": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "index": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": { "enum": ["release", "artifact", "path"] },
+        "repo": { "type": "string" },
+        "max_age_hours": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "mode": { "enum": ["advisory", "enforce"] },
+    "weights": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "HIGH": { "type": "integer" },
+            "MEDIUM": { "type": "integer" },
+            "LOW": { "type": "integer" },
+            "INFO": { "type": "integer" }
+          }
+        },
+        "consumer_multiplier": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "HIGH_confidence_service": { "type": "integer" },
+            "MEDIUM_confidence_service": { "type": "integer" },
+            "LOW_confidence_service": { "type": "integer" },
+            "cap": { "type": "integer" }
+          }
+        },
+        "incident_exposure": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "lookback_days": { "type": "integer", "minimum": 0 },
+            "per_incident": { "type": "integer", "minimum": 0 },
+            "cap": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "tiers": {
+      "type": "object",
+      "additionalProperties": false,
+      "propertyNames": { "enum": ["LOW", "MEDIUM", "HIGH"] },
+      "patternProperties": {
+        "^LOW$": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": { "max_score": { "type": "integer" } }
+        },
+        "^MEDIUM$": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": { "max_score": { "type": "integer" } }
+        },
+        "^HIGH$": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": { "min_score": { "type": "integer" } }
+        }
+      }
+    },
+    "hard_rules": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["finding"],
+            "properties": {
+              "finding": { "type": "string", "pattern": "^R-[A-Z]+-[0-9a-z]+$" },
+              "tier": { "$ref": "#/$defs/tier" },
+              "min_tier": { "$ref": "#/$defs/tier" }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["any_breaking_contract_with_consumers"],
+            "properties": {
+              "any_breaking_contract_with_consumers": { "type": "boolean" },
+              "tier": { "$ref": "#/$defs/tier" },
+              "min_tier": { "$ref": "#/$defs/tier" }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["paths"],
+            "properties": {
+              "paths": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+              "tier": { "$ref": "#/$defs/tier" },
+              "min_tier": { "$ref": "#/$defs/tier" }
+            }
+          }
+        ]
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "index_missing": { "$ref": "#/$defs/tier" },
+        "index_stale": { "$ref": "#/$defs/tier" },
+        "unresolved_consumers": { "$ref": "#/$defs/tier" },
+        "migration_unparseable": { "$ref": "#/$defs/tier" },
+        "contract_tool_unavailable": { "$ref": "#/$defs/tier" }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^(LOW|MEDIUM|HIGH)$": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "min_approvals": { "type": "integer", "minimum": 0 },
+            "require_owners": { "type": "boolean" },
+            "require_teams": { "type": "array", "items": { "type": "string" } },
+            "require_consumer_owners": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "overrides": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "allowed_teams": { "type": "array", "items": { "type": "string" } },
+        "require_reason": { "type": "boolean" },
+        "max_downgrade": { "type": "integer", "minimum": 0, "maximum": 2 }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "upload_artifact": { "type": "boolean" },
+        "commit_to_branch": { "type": "string" },
+        "include_line_context": { "type": "boolean" }
+      }
+    },
+    "comment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "collapse_low_tier": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "tier": { "enum": ["LOW", "MEDIUM", "HIGH"] }
+  }
+}

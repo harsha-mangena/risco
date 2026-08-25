@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Risco evidence bundle",
+  "type": "object",
+  "required": ["schema_version", "repo", "head_sha", "verdict", "bundle_hash"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string" },
+    "repo": { "type": "string" },
+    "pr_number": { "type": "integer" },
+    "base_sha": { "type": "string" },
+    "head_sha": { "type": "string" },
+    "index_snapshot_id": { "type": "string" },
+    "tool_versions": { "type": "object", "additionalProperties": { "type": "string" } },
+    "inputs": { "type": "object" },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "consumers": { "type": "array", "items": { "$ref": "#/$defs/consumer" } },
+    "contract_changes": { "type": "array", "items": { "$ref": "#/$defs/contractChange" } },
+    "verdict": { "$ref": "#/$defs/verdict" },
+    "approvals_at_evaluation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["user"],
+        "properties": {
+          "user": { "type": "string" },
+          "team_memberships": { "type": "array", "items": { "type": "string" } },
+          "state": { "type": "string" },
+          "sha": { "type": "string" }
+        }
+      }
+    },
+    "overrides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["user", "reason", "timestamp", "from_tier", "to_tier"],
+        "properties": {
+          "user": { "type": "string" },
+          "reason": { "type": "string" },
+          "timestamp": { "type": "string" },
+          "from_tier": { "enum": ["LOW", "MEDIUM", "HIGH"] },
+          "to_tier": { "enum": ["LOW", "MEDIUM", "HIGH"] }
+        }
+      }
+    },
+    "generated_at": { "type": "string" },
+    "bundle_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "required": ["id", "category", "severity", "title"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "category": { "enum": ["CONTRACT", "DDL", "CONSUMER", "OWNERSHIP", "INCIDENT", "UNCERTAINTY"] },
+        "severity": { "enum": ["HIGH", "MEDIUM", "LOW", "INFO"] },
+        "title": { "type": "string" },
+        "location": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "repo": { "type": "string" },
+            "path": { "type": "string" },
+            "line_start": { "type": "integer" },
+            "line_end": { "type": "integer" }
+          }
+        },
+        "details": { "type": "object" },
+        "weight": { "type": "integer" }
+      }
+    },
+    "consumer": {
+      "type": "object",
+      "required": ["service", "repo", "path", "line", "strategy", "confidence"],
+      "additionalProperties": false,
+      "properties": {
+        "service": { "type": "string" },
+        "repo": { "type": "string" },
+        "path": { "type": "string" },
+        "line": { "type": "integer" },
+        "strategy": {
+          "enum": [
+            "S1_GENERATED_CLIENT",
+            "S2_LITERAL_WITH_METHOD",
+            "S3_LITERAL_PATH",
+            "S4_FRAGMENT",
+            "S5_BASE_URL",
+            "U_UNRESOLVED"
+          ]
+        },
+        "confidence": { "enum": ["HIGH", "MEDIUM", "LOW"] },
+        "operation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "method": { "type": ["string", "null"] },
+            "path_template": { "type": ["string", "null"] },
+            "operation_id": { "type": ["string", "null"] },
+            "rpc": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "contractChange": {
+      "type": "object",
+      "required": ["source", "change_id", "breaking", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "enum": ["OPENAPI", "PROTOBUF"] },
+        "operation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "method": { "type": ["string", "null"] },
+            "path_template": { "type": ["string", "null"] },
+            "operation_id": { "type": ["string", "null"] },
+            "rpc": { "type": ["string", "null"] }
+          }
+        },
+        "change_id": { "type": "string" },
+        "breaking": { "type": "boolean" },
+        "description": { "type": "string" }
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "required": ["tier", "score"],
+      "additionalProperties": false,
+      "properties": {
+        "tier": { "enum": ["LOW", "MEDIUM", "HIGH"] },
+        "score": { "type": "integer" },
+        "hard_rules_fired": { "type": "array", "items": { "type": "string" } },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "required_reviewers": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "min_approvals": { "type": "integer" },
+            "users": { "type": "array", "items": { "type": "string" } },
+            "teams": { "type": "array", "items": { "type": "string" } },
+            "owner_paths": { "type": "array", "items": { "type": "string" } },
+            "owner_users": { "type": "array", "items": { "type": "string" } },
+            "consumer_owner_teams": { "type": "array", "items": { "type": "string" } },
+            "require_owners": { "type": "boolean" },
+            "require_consumer_owners": { "type": "boolean" }
+          }
+        },
+        "uncertainty_flags": { "type": "array", "items": { "type": "string" } },
+        "policy_hash": { "type": "string" },
+        "engine_version": { "type": "string" }
+      }
+    }
+  }
+}

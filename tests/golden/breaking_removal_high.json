@@ -1,0 +1,112 @@
+{
+  "approvals_at_evaluation": [],
+  "base_sha": "1111111",
+  "bundle_hash": "678407fbb4b898e99d9101ededd929fa1afdc98e3e300ee46d5e903aa5249efe",
+  "consumers": [
+    {
+      "confidence": "HIGH",
+      "line": 5,
+      "operation": {
+        "method": "GET",
+        "operation_id": "getOrder",
+        "path_template": "/v2/orders/{id}",
+        "rpc": null
+      },
+      "path": "src/gen/client.ts",
+      "repo": "acme/gateway",
+      "service": "acme/gateway",
+      "strategy": "S1_GENERATED_CLIENT"
+    },
+    {
+      "confidence": "HIGH",
+      "line": 4,
+      "operation": {
+        "method": "GET",
+        "operation_id": "getOrder",
+        "path_template": "/v2/orders/{id}",
+        "rpc": null
+      },
+      "path": "src/api/orders.ts",
+      "repo": "acme/web",
+      "service": "acme/web",
+      "strategy": "S2_LITERAL_WITH_METHOD"
+    }
+  ],
+  "contract_changes": [
+    {
+      "breaking": true,
+      "change_id": "OAS-response-optional-property-removed",
+      "description": "removed the optional property `fulfillment_eta` from the response with the `200` status",
+      "operation": {
+        "method": "GET",
+        "operation_id": "getOrder",
+        "path_template": "/v2/orders/{id}",
+        "rpc": null
+      },
+      "source": "OPENAPI"
+    }
+  ],
+  "findings": [],
+  "head_sha": "2222222",
+  "index_snapshot_id": "3f1e72607151e18363a6cb154bceb3f51e31977ab1c8ae37a98eb7a331f95987",
+  "inputs": {
+    "breaking_change_count": 1,
+    "changed_files": [
+      "openapi/orders.yaml"
+    ],
+    "consumer_services": [
+      "acme/gateway",
+      "acme/web"
+    ],
+    "contract_files": [
+      "openapi/orders.yaml"
+    ],
+    "index_age_hours": 0.0,
+    "migration_files": [],
+    "mode": "advisory",
+    "policy_hash": "fd14bc27942bfdf9508fac7aa1a0f0262c58cf02cbfb0a786720a1c4f17156d6",
+    "unresolved_count": 0,
+    "unresolved_examples": []
+  },
+  "overrides": [],
+  "pr_number": 812,
+  "repo": "acme/orders-api",
+  "schema_version": "risco-evidence-1",
+  "tool_versions": {},
+  "verdict": {
+    "engine_version": "risco-engine-0.1.0",
+    "hard_rules_fired": [
+      "any_breaking_contract_with_consumers:True"
+    ],
+    "policy_hash": "fd14bc27942bfdf9508fac7aa1a0f0262c58cf02cbfb0a786720a1c4f17156d6",
+    "reasons": [
+      "hard rule matched: any_breaking_contract_with_consumers:True",
+      "OAS-response-optional-property-removed consumed by acme/gateway (HIGH)",
+      "OAS-response-optional-property-removed consumed by acme/web (HIGH)",
+      "score 12 -> tier HIGH"
+    ],
+    "required_reviewers": {
+      "consumer_owner_teams": [
+        "acme/checkout-owners",
+        "acme/gateway-owners",
+        "acme/platform-leads"
+      ],
+      "min_approvals": 2,
+      "owner_paths": [
+        "openapi/orders.yaml"
+      ],
+      "owner_users": [
+        "acme/orders-team"
+      ],
+      "require_consumer_owners": true,
+      "require_owners": true,
+      "teams": [
+        "platform-leads"
+      ],
+      "users": []
+    },
+    "score": 12,
+    "tier": "HIGH",
+    "uncertainty_flags": []
+  }
+}

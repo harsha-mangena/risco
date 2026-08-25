@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Risco incident history input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["incidents"],
+  "properties": {
+    "incidents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "started_at"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "started_at": { "type": "string", "format": "date-time" },
+          "severity": { "type": "string" },
+          "services": { "type": "array", "items": { "type": "string" } },
+          "repos": { "type": "array", "items": { "type": "string" } },
+          "paths": { "type": "array", "items": { "type": "string" } },
+          "prs": { "type": "array", "items": { "type": "string" } },
+          "commits": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

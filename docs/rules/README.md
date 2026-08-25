@@ -1,0 +1,25 @@
+# Rule catalog
+
+- [`R-DDL-001`](R-DDL-001.md) — DROP TABLE
+- [`R-DDL-002`](R-DDL-002.md) — DROP COLUMN
+- [`R-DDL-003`](R-DDL-003.md) — RENAME TABLE / RENAME COLUMN
+- [`R-DDL-004`](R-DDL-004.md) — ALTER COLUMN TYPE (non-widening)
+- [`R-DDL-004a`](R-DDL-004a.md) — ALTER COLUMN TYPE (widening)
+- [`R-DDL-005`](R-DDL-005.md) — ADD COLUMN ... NOT NULL without DEFAULT
+- [`R-DDL-006`](R-DDL-006.md) — ADD COLUMN with volatile DEFAULT
+- [`R-DDL-007`](R-DDL-007.md) — CREATE INDEX without CONCURRENTLY
+- [`R-DDL-008`](R-DDL-008.md) — ADD FOREIGN KEY without NOT VALID
+- [`R-DDL-009`](R-DDL-009.md) — ALTER COLUMN SET NOT NULL
+- [`R-DDL-010`](R-DDL-010.md) — ADD CONSTRAINT CHECK/UNIQUE without NOT VALID
+- [`R-DDL-011`](R-DDL-011.md) — Destructive DML in migration (TRUNCATE / DELETE / UPDATE without WHERE)
+- [`R-DDL-012`](R-DDL-012.md) — DDL and DML mixed in one migration file
+- [`R-DDL-013`](R-DDL-013.md) — DROP INDEX without CONCURRENTLY
+- [`R-DDL-014`](R-DDL-014.md) — Migration touches a table/column also referenced by changed source in this PR
+- [`R-DDL-900`](R-DDL-900.md) — Migration file unparseable
+- [`R-DDL-901`](R-DDL-901.md) — Unmapped Alembic operation
+- [`R-CON-900`](R-CON-900.md) — Contract diff unavailable / failed / unparseable
+- [`R-OWN-001`](R-OWN-001.md) — Sensitive path touched
+- [`R-OWN-900`](R-OWN-900.md) — No CODEOWNERS found
+- [`R-INC-001`](R-INC-001.md) — Path/service implicated in prior incident
+- [`R-POL-001`](R-POL-001.md) — Merge-risk policy changed in this PR
+- [`R-OVR-400`](R-OVR-400.md) — Override rejected

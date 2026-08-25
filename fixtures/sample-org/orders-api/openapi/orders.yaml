@@ -1,0 +1,50 @@
+openapi: 3.0.0
+info:
+  title: orders-api
+  version: "2"
+paths:
+  /v2/orders/{id}:
+    get:
+      operationId: getOrder
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: an order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+  /v2/refunds:
+    post:
+      operationId: createRefund
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order_id:
+                  type: string
+                amount:
+                  type: number
+      responses:
+        "201":
+          description: refund created
+components:
+  schemas:
+    Order:
+      type: object
+      required: [id, total]
+      properties:
+        id:
+          type: string
+        total:
+          type: number
+        fulfillment_eta:
+          type: string
+          description: estimated delivery window shown at checkout

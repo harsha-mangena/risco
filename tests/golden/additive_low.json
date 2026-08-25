@@ -1,0 +1,80 @@
+{
+  "approvals_at_evaluation": [],
+  "base_sha": "1111111",
+  "bundle_hash": "5c383175b0d63b91c36bfb19cd97670769d119e87c0ffebe3767cef48d5230b9",
+  "consumers": [],
+  "contract_changes": [
+    {
+      "breaking": true,
+      "change_id": "OAS-endpoint-added",
+      "description": "endpoint added",
+      "operation": {
+        "method": "GET",
+        "operation_id": "getOrderHistory",
+        "path_template": "/v2/orders/{id}/history",
+        "rpc": null
+      },
+      "source": "OPENAPI"
+    }
+  ],
+  "findings": [
+    {
+      "category": "OWNERSHIP",
+      "details": {},
+      "id": "R-OWN-900",
+      "location": {
+        "line_end": 0,
+        "line_start": 0,
+        "path": "",
+        "repo": "acme/orders-api"
+      },
+      "severity": "INFO",
+      "title": "No CODEOWNERS file found",
+      "weight": 0
+    }
+  ],
+  "head_sha": "2222222",
+  "index_snapshot_id": "3f1e72607151e18363a6cb154bceb3f51e31977ab1c8ae37a98eb7a331f95987",
+  "inputs": {
+    "breaking_change_count": 1,
+    "changed_files": [
+      "openapi/orders.yaml"
+    ],
+    "consumer_services": [],
+    "contract_files": [
+      "openapi/orders.yaml"
+    ],
+    "index_age_hours": 0.0,
+    "migration_files": [],
+    "mode": "advisory",
+    "policy_hash": "fd14bc27942bfdf9508fac7aa1a0f0262c58cf02cbfb0a786720a1c4f17156d6",
+    "unresolved_count": 0,
+    "unresolved_examples": []
+  },
+  "overrides": [],
+  "pr_number": 812,
+  "repo": "acme/orders-api",
+  "schema_version": "risco-evidence-1",
+  "tool_versions": {},
+  "verdict": {
+    "engine_version": "risco-engine-0.1.0",
+    "hard_rules_fired": [],
+    "policy_hash": "fd14bc27942bfdf9508fac7aa1a0f0262c58cf02cbfb0a786720a1c4f17156d6",
+    "reasons": [
+      "score 0 -> tier LOW"
+    ],
+    "required_reviewers": {
+      "consumer_owner_teams": [],
+      "min_approvals": 1,
+      "owner_paths": [],
+      "owner_users": [],
+      "require_consumer_owners": false,
+      "require_owners": false,
+      "teams": [],
+      "users": []
+    },
+    "score": 0,
+    "tier": "LOW",
+    "uncertainty_flags": []
+  }
+}

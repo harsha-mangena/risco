@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "risco-core"
+version = "0.1.0"
+description = "Risco: deterministic merge-risk router for pull requests"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+dependencies = [
+  "pydantic>=2.6",
+  "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+sql = ["pglast>=6.0"]
+scan = [
+  "tree-sitter>=0.23",
+  "tree-sitter-python>=0.23",
+  "tree-sitter-typescript>=0.23",
+]
+dev = [
+  "pytest>=8.0",
+  "hypothesis>=6.100",
+  "risco-core[sql,scan]",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["risco"]
+
+[tool.pytest.ini_options]
+testpaths = ["../../tests"]

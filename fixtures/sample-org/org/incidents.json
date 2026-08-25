@@ -1,0 +1,35 @@
+{
+  "incidents": [
+    {
+      "id": "INC-2041",
+      "title": "Checkout 500s after orders schema change",
+      "started_at": "2026-06-15T09:12:00Z",
+      "severity": "SEV2",
+      "services": [],
+      "repos": [],
+      "paths": [
+        "db/migrations/",
+        "src/orders/"
+      ],
+      "prs": [],
+      "commits": []
+    },
+    {
+      "id": "INC-1987",
+      "title": "Payments double charge on retry",
+      "started_at": "2026-07-02T14:40:00Z",
+      "severity": "SEV1",
+      "services": [
+        "payments-api"
+      ],
+      "repos": [
+        "payments-api"
+      ],
+      "paths": [
+        "proto/payments/"
+      ],
+      "prs": [],
+      "commits": []
+    }
+  ]
+}

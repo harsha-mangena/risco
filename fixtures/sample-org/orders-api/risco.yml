@@ -1,0 +1,19 @@
+version: 1
+
+service:
+  name: orders-api
+  contracts:
+    openapi: [openapi/orders.yaml]
+  migrations:
+    paths:
+      - db/migrations/*.sql
+      - alembic/versions/*.py
+  base_url_env: [ORDERS_SERVICE_URL, ORDERS_API_BASE]
+
+mode: advisory
+
+hard_rules:
+  - { finding: R-DDL-001, tier: HIGH }
+  - { finding: R-DDL-002, tier: HIGH }
+  - { finding: R-DDL-011, tier: HIGH }
+  - { any_breaking_contract_with_consumers: true, tier: HIGH }

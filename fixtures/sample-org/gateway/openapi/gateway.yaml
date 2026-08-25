@@ -1,0 +1,45 @@
+openapi: 3.0.0
+info:
+  title: gateway
+  version: "1"
+paths:
+  /v1/gateway/health:
+    get:
+      operationId: getGatewayHealth
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+  /v1/orders-proxy/{id}:
+    get:
+      operationId: proxyGetOrder
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: proxied order payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderPayload"
+components:
+  schemas:
+    OrderPayload:
+      type: object
+      properties:
+        id:
+          type: string
+        fulfillment_eta:
+          type: string
+        total:
+          type: number

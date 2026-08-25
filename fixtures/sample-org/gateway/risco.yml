@@ -1,0 +1,11 @@
+version: 1
+
+service:
+  name: gateway
+  contracts:
+    openapi: [openapi/gateway.yaml]
+  migrations:
+    paths: []
+  base_url_env: [GATEWAY_SERVICE_URL]
+
+mode: advisory

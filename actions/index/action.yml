@@ -1,0 +1,33 @@
+name: "Risco / org index"
+description: "Builds and publishes the versioned cross-repo index snapshot (endpoint registry, consumers, teams, incidents) and calibration artifacts."
+
+inputs:
+  org-token:
+    description: "Fine-grained token: contents:read on in-scope repos, members:read"
+    required: true
+  repos:
+    description: "Comma-separated repo list or glob (e.g. acme/*)"
+    required: false
+    default: "*"
+  exclude:
+    description: "Comma-separated globs to skip"
+    required: false
+    default: ""
+  incidents:
+    description: "Path to incidents JSON in this repo"
+    required: false
+    default: "incidents.json"
+  outcomes:
+    description: "Also compute outcome labels and attach the calibration report"
+    required: false
+    default: "true"
+
+runs:
+  using: "docker"
+  image: "docker://ghcr.io/risco-dev/risco-actions/index:v1"
+  env:
+    INPUT_ORG_TOKEN: ${{ inputs.org-token }}
+    INPUT_REPOS: ${{ inputs.repos }}
+    INPUT_EXCLUDE: ${{ inputs.exclude }}
+    INPUT_INCIDENTS: ${{ inputs.incidents }}
+    INPUT_OUTCOMES: ${{ inputs.outcomes }}

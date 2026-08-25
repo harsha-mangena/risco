@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e "packages/risco-core[sql,scan,dev]" -e packages/risco-cli
+      - name: Fetch oasdiff (linux)
+        if: runner.os == 'Linux'
+        run: |
+          mkdir -p .tools/bin
+          curl -sSfL https://github.com/oasdiff/oasdiff/releases/download/v1.29.1/oasdiff_1.29.1_linux_amd64.tar.gz | tar xz -C .tools/bin oasdiff
+      - name: Test
+        env:
+          RISCO_OASDIFF_BIN: ${{ github.workspace }}/.tools/bin/oasdiff
+        run: pytest tests -q
+
+  policy-schema-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pyyaml jsonschema
+      - name: Fixture policies validate against schemas
+        run: |
+          python - <<'PY'
+          import glob, json, yaml, jsonschema
+          schema = json.load(open("schemas/risco-policy.schema.json"))
+          for path in glob.glob("fixtures/sample-org/**/risco.yml", recursive=True):
+              jsonschema.validate(yaml.safe_load(open(path)), schema)
+              print("ok", path)
+          PY

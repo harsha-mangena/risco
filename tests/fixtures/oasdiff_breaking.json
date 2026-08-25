@@ -1,0 +1,1 @@
+[{"id":"response-optional-property-removed","text":"removed the optional property `fulfillment_eta` from the response with the `200` status","level":2,"operation":"GET","operationId":"getOrder","path":"/v2/orders/{id}","section":"paths","baseSource":{"file":"base.yaml","line":16,"column":19,"endLine":16,"endColumn":50},"fingerprint":"e4af213ec49f"}]

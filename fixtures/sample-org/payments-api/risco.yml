@@ -1,0 +1,11 @@
+version: 1
+
+service:
+  name: payments-api
+  contracts:
+    protobuf:
+      - proto/**/*.proto
+  migrations:
+    paths: []
+
+mode: advisory

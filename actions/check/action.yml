@@ -1,0 +1,57 @@
+name: "Risco / merge-risk"
+description: "Deterministic merge-risk gate: contract blast radius, migration risk, consumer routing, evidence bundle."
+branding:
+  icon: "shield"
+  color: "purple"
+
+inputs:
+  policy:
+    description: "Path to risco.yml"
+    required: false
+    default: "risco.yml"
+  index-token:
+    description: "Token with contents:read on the risco-index repo (org secret RISCO_INDEX_READ_TOKEN)"
+    required: false
+    default: ""
+  index-repo:
+    description: "Org index repository override (defaults to policy index.repo)"
+    required: false
+    default: ""
+  incidents:
+    description: "Optional path to an incident history JSON file inside this repo"
+    required: false
+    default: ""
+  mode:
+    description: "advisory | enforce (overrides policy when set)"
+    required: false
+    default: ""
+  fail-on:
+    description: "never | high | medium — exit-failure threshold independent of check conclusion"
+    required: false
+    default: "never"
+  github-token:
+    description: "Token used for check run, comments and reviewer requests"
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  tier:
+    description: "LOW | MEDIUM | HIGH | NEUTRAL"
+  score:
+    description: "Numeric verdict score"
+  bundle-hash:
+    description: "sha256 of the canonical evidence bundle"
+  evidence-path:
+    description: "Local path of the evidence bundle JSON"
+
+runs:
+  using: "docker"
+  image: "docker://ghcr.io/risco-dev/risco-actions/check:v1"
+  env:
+    INPUT_POLICY: ${{ inputs.policy }}
+    INPUT_INDEX_TOKEN: ${{ inputs.index-token }}
+    INPUT_INDEX_REPO: ${{ inputs.index-repo }}
+    INPUT_INCIDENTS: ${{ inputs.incidents }}
+    INPUT_MODE: ${{ inputs.mode }}
+    INPUT_FAIL_ON: ${{ inputs.fail-on }}
+    INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}

@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "risco-cli"
+version = "0.1.0"
+description = "Risco CLI: analyze, index, replay, calibrate, validate-policy"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+dependencies = ["risco-core[sql,scan]>=0.1.0"]
+
+[project.scripts]
+risco = "risco.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["risco"]
+include = ["risco/cli.py", "risco/__init__.py", "risco/actions_entry/**"]

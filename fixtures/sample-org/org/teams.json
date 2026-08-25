@@ -1,0 +1,9 @@
+{
+  "platform-leads": ["ana", "bruno"],
+  "orders-team": ["carla", "diego"],
+  "orders-owners": ["carla"],
+  "checkout-owners": ["elif"],
+  "web-owners": ["farid"],
+  "payments-owners": ["gita"],
+  "gateway-owners": ["hana"]
+}

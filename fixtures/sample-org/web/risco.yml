@@ -1,0 +1,10 @@
+version: 1
+
+service:
+  name: web
+
+mode: advisory
+
+comment:
+  enabled: true
+  collapse_low_tier: true
