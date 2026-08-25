@@ -61,7 +61,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository_owner }}/risco-actions/${{ matrix.action }}
           tags: type=semver,pattern={{version}}
-      - uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v7
         with:
           context: .
           file: actions/${{ matrix.action }}/Dockerfile
