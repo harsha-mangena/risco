@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 ARG OASDIFF_VERSION=v1.29.1
 ARG BUF_VERSION=v1.47.2
